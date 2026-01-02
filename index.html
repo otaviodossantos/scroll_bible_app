@@ -1,0 +1,1399 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Plano de Leitura 2026</title>
+    <style>
+        :root {
+            --brand-lime: #d8ff2f;
+            --brand-blue: #1d7bff;
+            --brand-purple: #8a3dff;
+            --brand-pink: #ff63c6;
+            --brand-navy: #0c0a5a;
+            --brand-cyan: #31d7e6;
+
+            --bg: #050510;
+            --panel: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #e2e8f0;
+            --muted: rgba(226, 232, 240, 0.68);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: transparent;
+            color: var(--text);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 12% 18%, rgba(49, 215, 230, 0.22) 0%, transparent 45%),
+                radial-gradient(circle at 88% 22%, rgba(255, 99, 198, 0.18) 0%, transparent 42%),
+                radial-gradient(circle at 90% 82%, rgba(216, 255, 47, 0.12) 0%, transparent 52%),
+                radial-gradient(circle at 22% 85%, rgba(29, 123, 255, 0.14) 0%, transparent 52%),
+                linear-gradient(180deg, #03030a 0%, var(--bg) 100%);
+        }
+
+        body {
+            position: relative;
+        }
+
+        .app {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100%;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            padding: 12px 12px 10px;
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0 2px;
+        }
+
+        .titleText {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .appLogo {
+            width: 26px;
+            height: 26px;
+            flex: 0 0 auto;
+        }
+
+        .appLogo svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            fill: rgba(49, 215, 230, 0.92);
+            filter: drop-shadow(0 0 10px rgba(49, 215, 230, 0.28));
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: 18px;
+            letter-spacing: -0.8px;
+            text-transform: uppercase;
+        }
+
+        .title h1 .brand {
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .title h1 .accent {
+            font-weight: 900;
+            color: var(--brand-cyan);
+        }
+
+        .nav {
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .progress {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .progressTop {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .progressTop .label {
+            font-size: 11px;
+            color: rgba(226, 232, 240, 0.72);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .progressTop .value {
+            font-size: 12px;
+            font-weight: 900;
+            color: rgba(226, 232, 240, 0.92);
+        }
+
+        .progressBar {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        .progressBar > div {
+            height: 100%;
+            width: 0%;
+            background: rgba(226, 232, 240, 0.85);
+            border-radius: 999px;
+        }
+
+        .nav button {
+            height: 40px;
+            border-radius: 12px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .nav button:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        .nav button:active { transform: translateY(1px); }
+
+        .monthTitle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(14, 19, 43, 0.78), rgba(7, 9, 20, 0.88));
+        }
+
+        .monthTitle .m {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+        }
+
+        .monthTitle .y {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .week {
+            margin-top: 14px;
+            display: grid;
+            padding: 0 12px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            color: rgba(226, 232, 240, 0.75);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .week div { text-align: center; }
+
+        .grid {
+            margin-top: 10px;
+            padding: 0 12px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .cell {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 0;
+        }
+
+        .cell[aria-disabled="true"] {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        .cell .d {
+            font-weight: 800;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .cell.hasReading {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .cell.hasReading::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(226, 232, 240, 0.85);
+            bottom: 8px;
+            right: 8px;
+            opacity: 1;
+        }
+
+        .cell.isToday {
+            outline: 2px solid rgba(216, 255, 47, 0.55);
+            outline-offset: 2px;
+        }
+
+        .cell.isSelected {
+            border-color: rgba(216, 255, 47, 0.55);
+            background: rgba(216, 255, 47, 0.12);
+        }
+
+        .hint {
+            margin-top: 12px;
+            padding: 12px 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        .reflections {
+            margin-top: 12px;
+            padding: 12px;
+            margin-left: 12px;
+            margin-right: 12px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .reflectionsHeader {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .reflectionsHeader .h {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: rgba(226, 232, 240, 0.78);
+            margin: 0;
+        }
+
+        .reflectionsHeader .date {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .reflectionList {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reflectionCard {
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .reflectionMeta {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .reflectionMeta .name {
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: -0.2px;
+            color: rgba(226, 232, 240, 0.92);
+        }
+
+        .reflectionMeta .time {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .reflectionText {
+            font-size: 13px;
+            line-height: 1.45;
+            color: rgba(226, 232, 240, 0.88);
+            white-space: pre-wrap;
+        }
+
+        .reflectionsState {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .sheetOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.62);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
+            z-index: 20;
+        }
+
+        .sheetOverlay.open { display: flex; }
+
+        .sheet {
+            width: min(430px, 100%);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: linear-gradient(180deg, rgba(10, 10, 25, 0.98) 0%, rgba(6, 6, 16, 0.98) 100%);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+            overflow: hidden;
+        }
+
+        .sheetHandle {
+            height: 4px;
+            width: 46px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.18);
+            margin: 10px auto 0;
+        }
+
+        .sheetHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 14px 10px;
+        }
+
+        .sheetHeader .date {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sheetHeader .date .day {
+            font-weight: 900;
+            letter-spacing: -0.4px;
+            font-size: 14px;
+        }
+
+        .sheetHeader .date .sub {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .sheetHeader button {
+            height: 38px;
+            width: 38px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .sheetContent {
+            padding: 0 14px 16px;
+        }
+
+        .reading {
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .reading .label {
+            font-size: 11px;
+            color: rgba(226, 232, 240, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .reading .text {
+            margin-top: 8px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+            line-height: 1.15;
+            background: linear-gradient(90deg, var(--brand-cyan), var(--brand-pink), var(--brand-lime));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .readingInline {
+            margin-top: 12px;
+            margin-left: 12px;
+            margin-right: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .readingInlineHeader {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .readingInlineHeader .h {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: rgba(226, 232, 240, 0.78);
+            margin: 0;
+        }
+
+        .readingInlineHeader .date {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .nav button:active { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="topbar">
+            <div class="title">
+                <div class="titleText">
+                    <h1><span class="brand">Scroll</span> <span class="accent">Bible</span> 2026</h1>
+                    <div style="font-size: 11px; color: rgba(226, 232, 240, 0.7);">Plano de leitura</div>
+                </div>
+                <div class="appLogo" aria-hidden="true">
+                    <svg viewBox="0 0 10760 10000" xmlns="http://www.w3.org/2000/svg"><path d="M4537 9970 c-33 -39 -41 -79 -26 -132 10 -39 201 -232 1970 -1999 l1958 -1956 42 -89 c63 -136 78 -189 89 -304 6 -58 13 -566 16 -1130 l6 -1025 -1283 1280 c-1174 1171 -1351 1346 -1519 1500 -79 73 -116 93 -226 120 -170 44 -351 32 -473 -30 -60 -30 -301 -265 -1801 -1762 l-1105 -1102 -5 1427 -5 1427 -43 75 c-66 115 -105 163 -163 202 -63 42 -155 82 -237 103 -79 21 -432 28 -923 18 l-396 -8 -88 -44 c-117 -58 -200 -140 -254 -254 -78 -163 -72 93 -68 -2668 2 -1880 6 -2493 15 -2551 14 -84 68 -252 109 -332 110 -218 298 -421 511 -550 113 -69 210 -109 362 -149 108 -28 127 -30 300 -30 133 -1 208 4 265 16 173 35 357 110 490 200 78 53 240 212 1745 1712 690 687 1330 1324 1422 1415 l167 164 1468 -1465 c1414 -1410 1773 -1762 1865 -1829 213 -155 492 -231 798 -217 284 12 547 109 754 276 88 71 214 213 285 321 93 143 181 375 181 481 0 26 5 51 10 54 7 4 10 737 10 2166 0 1438 -3 2158 -10 2154 -7 -4 -10 84 -10 257 0 145 -5 292 -10 328 -30 185 -182 537 -330 760 -161 244 -121 201 -1724 1808 l-1201 1204 -140 69 c-146 71 -230 99 -302 99 -23 0 -45 5 -48 10 -4 7 -420 10 -1215 10 l-1208 0 -25 -30z"/></svg>
+                </div>
+            </div>
+
+            <div class="nav">
+                <button id="prevMonth" type="button" aria-label="Mês anterior">‹</button>
+                <div class="monthTitle" role="status" aria-live="polite">
+                    <div class="m" id="monthLabel">—</div>
+                    <div class="y" id="yearLabel">—</div>
+                </div>
+                <button id="nextMonth" type="button" aria-label="Próximo mês">›</button>
+            </div>
+
+            <div class="progress" aria-live="polite">
+                <div class="progressTop">
+                    <div class="label">Progresso</div>
+                    <div class="value" id="progressValue">Dia — de 365</div>
+                </div>
+                <div class="progressBar" aria-hidden="true"><div id="progressFill"></div></div>
+            </div>
+        </div>
+
+        <div class="week" aria-hidden="true">
+            <div>Dom</div>
+            <div>Seg</div>
+            <div>Ter</div>
+            <div>Qua</div>
+            <div>Qui</div>
+            <div>Sex</div>
+            <div>Sáb</div>
+        </div>
+
+        <div class="grid" id="calendarGrid" role="grid" aria-label="Calendário"></div>
+
+        <section class="readingInline" aria-live="polite">
+            <div class="readingInlineHeader">
+                <p class="h">Leitura do dia</p>
+                <div class="date" id="readingDate">—</div>
+            </div>
+            <div class="reading">
+                <div class="label">Leitura</div>
+                <div class="text" id="readingText">—</div>
+            </div>
+        </section>
+
+        <section class="reflections" aria-live="polite">
+            <div class="reflectionsHeader">
+                <p class="h">Reflexões do dia</p>
+                <div class="date" id="refDate">—</div>
+            </div>
+            <div class="reflectionsState" id="refState">Carregando reflexões…</div>
+            <div class="reflectionList" id="refList" style="display:none;"></div>
+        </section>
+    </div>
+
+    <template id="planSource">
+        <div class="month-card">
+            <div class="month-name">Janeiro</div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Gn 1-3</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Gn 4-7</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Gn 8-11</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Gn 12-15</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Gn 16-18</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Gn 19-21</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Gn 22-24</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Gn 25-26</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Gn 27-28</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Gn 29-30</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Gn 31-32</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Gn 33-35</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Gn 36-37</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Gn 38-40</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Gn 41-42</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Gn 43-44</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Gn 45-47</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Gn 48-50</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Êx 1-3</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Êx 4-6</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Êx 7-8</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Êx 9-11</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Êx 12-13</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Êx 14-16</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Êx 17-20</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Êx 21-23</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Êx 24-26</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Êx 27-28</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Êx 29-30</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Êx 31-33</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">Êx 34-35</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Fevereiro</div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Êx 36-38</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Êx 39-40 + Lv 1</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Lv 2-4</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Lv 5-7</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Lv 8-10</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Lv 11-12</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Lv 13</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Lv 14-15</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Lv 16-18</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Lv 19-21</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Lv 22-23</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Lv 24-25</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Lv 26-27</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Nm 1-2</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Nm 3-4</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Nm 5-6</span></td></tr>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Nm 7</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Nm 8-10</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Nm 11-13</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Nm 14-15</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Nm 16-18</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Nm 19-21</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Nm 22-23</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Nm 24-26</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Nm 27-29</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Nm 30-32</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Nm 33-35</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Nm 36 + Dt 1-2</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Março <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Dt 3-4</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Dt 5-7</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Dt 8-10</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Dt 11-12</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Dt 13-15</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Dt 16-18</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Dt 19-21</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Dt 22-24</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Dt 25-27</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Dt 28</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Dt 29-31</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Dt 32-33</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Dt 34 + Js 1-3</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Js 4-6</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Js 7-8</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Js 9-10</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Js 11-13</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Js 14-17</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Js 18-20</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Js 21-22</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Js 23-24 + Jz 1</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Jz 2-4</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Jz 5-6</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Jz 7-8</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Jz 9-10</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Jz 11-13</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Jz 14-16</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Jz 17-19</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Jz 20-21</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Rt 1-4</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">1Sm 1-2</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Abril <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">1Sm 3-6</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">1Sm 7-9</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">1Sm 10-12</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">1Sm 13-14</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">1Sm 15-16</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">1Sm 17-18</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">1Sm 19-20</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">1Sm 21-23</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">1Sm 24-25</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">1Sm 26-29</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">1Sm 30-31 + 2Sm 1</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">2Sm 2-3</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">2Sm 4-6</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">2Sm 7-10</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">2Sm 11-12</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">2Sm 13-14</span></td></tr>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">2Sm 15-16</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">2Sm 17-18</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">2Sm 19-20</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">2Sm 21-23</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">2Sm 24 + 1Rs 1</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">1Rs 2-3</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">1Rs 4-6</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">1Rs 7</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">1Rs 8</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">1Rs 9-10</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">1Rs 11-12</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">1Rs 13-14</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">1Rs 15-16</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">1Rs 17-18</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Maio <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">1Rs 19-20</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">1Rs 21-22</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">2Rs 1-3</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">2Rs 4-5</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">2Rs 6-7</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">2Rs 8-9</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">2Rs 10-11</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">2Rs 12-14</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">2Rs 15-16</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">2Rs 17-18</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">2Rs 19-21</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">2Rs 22-23</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">2Rs 24-25 + 1Cr 1</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">1Cr 2-4</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">1Cr 5-6</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">1Cr 7-9</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">1Cr 10-12</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">1Cr 13-16</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">1Cr 17-20</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">1Cr 21-23</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">1Cr 24-26</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">1Cr 27-29</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">2Cr 1-4</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">2Cr 5-6</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">2Cr 7-9</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">2Cr 10-13</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">2Cr 14-17</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">2Cr 18-20</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">2Cr 21-23</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">2Cr 24-25</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">2Cr 26-28</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Junho <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">2Cr 29-30</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">2Cr 31-32</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">2Cr 33-34</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">2Cr 35-36 + Ed 1</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Ed 2-4</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Ed 5-7</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Ed 8-10</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Ne 1-3</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Ne 4-6</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Ne 7-8</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Ne 9-10</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Ne 11-12</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Ne 13 + Et 1</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Et 2-5</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Et 6-9</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Et 10 + Jó 1-5</span></td></tr>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Jó 6-10</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Jó 11-15</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Jó 16-20</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Jó 21-26</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Jó 27-30</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Jó 31-34</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Jó 35-38</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Jó 39-42 + Sl 1</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Sl 2-10</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Sl 11-18</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Sl 19-26</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Sl 27-33</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Sl 34-38</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Sl 39-45</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Julho <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Sl 46-54</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Sl 55-63</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Sl 64-69</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Sl 70-76</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Sl 77-80</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Sl 81-88</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Sl 89-94</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Sl 95-103</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Sl 104-106</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Sl 107-114</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Sl 115-118</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Sl 119</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Sl 120-135</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Sl 136-143</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Sl 144-150 + Pv 1</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Pv 2-6</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Pv 7-11</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Pv 12-15</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Pv 16-19</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Pv 20-23</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Pv 24-27</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Pv 28-31</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Ec 1-4</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Ec 5-8</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Ec 9-12 + Ct 1</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Ct 2-7</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Ct 8 + Is 1-3</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Is 4-7</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Is 8-10</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Is 11-15</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">Is 16-21</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Agosto <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Is 22-25</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Is 26-29</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Is 30-33</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Is 34-37</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Is 38-41</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Is 42-44</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Is 45-48</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Is 49-51</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Is 52-56</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Is 57-60</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Is 61-65</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Is 66 + Jr 1-2</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Jr 3-4</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Jr 5-6</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Jr 7-9</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Jr 10-12</span></td></tr>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Jr 13-15</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Jr 16-18</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Jr 19-22</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Jr 23-25</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Jr 26-28</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Jr 29-30</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Jr 31-32</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Jr 33-35</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Jr 36-38</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Jr 39-41</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Jr 42-44</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Jr 45-48</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Jr 49-50</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Jr 51</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">Jr 52 + Lm 1</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Setembro <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Lm 2-4</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Lm 5 + Ez 1-3</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Ez 4-7</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Ez 8-11</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Ez 12-14</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Ez 15-16</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Ez 17-19</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Ez 20-21</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Ez 22-23</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Ez 24-26</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Ez 27-29</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Ez 30-32</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Ez 33-34</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Ez 35-37</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Ez 38-39</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Ez 40-41</span></td></tr>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Ez 42-44</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Ez 45-47</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Ez 48 + Dn 1</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Dn 2-3</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Dn 4-5</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Dn 6-7</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Dn 8-10</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Dn 11-12 + Os 1</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Os 2-7</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Os 8-13</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Os 14 + Jl 1-3</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Am 1-5</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Am 6-9 + Ob 1</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Jn 1-4 + Mq 1-2</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Outubro <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Mq 3-7</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Na 1-3 + Hc 1-2</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Hc 3 + Sf 1-3</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Ag 1-2 + Zc 1-2</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Zc 3-8</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Zc 9-13</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Zc 14 + Ml 1-3</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Ml 4 + Mt 1-4</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Mt 5-6</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Mt 7-9</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Mt 10-11</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Mt 12-13</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Mt 14-16</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Mt 17-19</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Mt 20-21</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Mt 22-23</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">Mt 24-25</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">Mt 26</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Mt 27-28</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Mc 1-3</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Mc 4-5</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Mc 6-7</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Mc 8-9</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Mc 10-11</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">Mc 12-13</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">Mc 14-15</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">Mc 16 + Lc 1</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Lc 2-3</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Lc 4-5</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Lc 6-7</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">Lc 8</span></td></tr>
+                </table>
+            </div>
+        </div>            
+        <div class="month-card">
+            <div class="month-name">Novembro <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Lc 9-10</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">Lc 11-12</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">Lc 13-15</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">Lc 16-18</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">Lc 19-20</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">Lc 21-22</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">Lc 23-24</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">Jo 1-3</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">Jo 4-5</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Jo 6-7</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Jo 8-9</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Jo 10-11</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Jo 12-13</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Jo 14-16</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Jo 17-19</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">Jo 20-21 + At 1</span></td></tr>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">At 2-4</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">At 5-7</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">At 8-9</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">At 10-12</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">At 13-14</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">At 15-16</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">At 17-19</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">At 20-21</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">At 22-24</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">At 25-27</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">At 28 + Rm 1-2</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Rm 3-6</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Rm 7-9</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Rm 10-13</span></td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="month-card">
+            <div class="month-name">Dezembro <i class="fa-solid fa-calendar-day"></i></div>
+            <div class="days-grid">
+                <table>
+                    <tr><td><span class="day-num">01</span><span class="reading-text">Rm 14-16</span></td></tr>
+                    <tr><td><span class="day-num">02</span><span class="reading-text">1Co 1-4</span></td></tr>
+                    <tr><td><span class="day-num">03</span><span class="reading-text">1Co 5-8</span></td></tr>
+                    <tr><td><span class="day-num">04</span><span class="reading-text">1Co 9-11</span></td></tr>
+                    <tr><td><span class="day-num">05</span><span class="reading-text">1Co 12-14</span></td></tr>
+                    <tr><td><span class="day-num">06</span><span class="reading-text">1Co 15-16 + 2Co 1</span></td></tr>
+                    <tr><td><span class="day-num">07</span><span class="reading-text">2Co 2-6</span></td></tr>
+                    <tr><td><span class="day-num">08</span><span class="reading-text">2Co 7-10</span></td></tr>
+                    <tr><td><span class="day-num">09</span><span class="reading-text">2Co 11-13 + Gl 1</span></td></tr>
+                    <tr><td><span class="day-num">10</span><span class="reading-text">Gl 2-4</span></td></tr>
+                    <tr><td><span class="day-num">11</span><span class="reading-text">Gl 5-6 + Ef 1-3</span></td></tr>
+                    <tr><td><span class="day-num">12</span><span class="reading-text">Ef 4-6</span></td></tr>
+                    <tr><td><span class="day-num">13</span><span class="reading-text">Fp 1-3</span></td></tr>
+                    <tr><td><span class="day-num">14</span><span class="reading-text">Fp 4 + Cl 1-3</span></td></tr>
+                    <tr><td><span class="day-num">15</span><span class="reading-text">Cl 4 + 1Ts 1-4</span></td></tr>
+                    <tr><td><span class="day-num">16</span><span class="reading-text">1Ts 5 + 2Ts + 1Tm 1</span></td></tr>
+                </table>
+                <table>
+                    <tr><td><span class="day-num">17</span><span class="reading-text">1Tm 2-6</span></td></tr>
+                    <tr><td><span class="day-num">18</span><span class="reading-text">2Tm 1-4 + Tt 1</span></td></tr>
+                    <tr><td><span class="day-num">19</span><span class="reading-text">Tt 2-3 + Fm + Hb 1-2</span></td></tr>
+                    <tr><td><span class="day-num">20</span><span class="reading-text">Hb 3-7</span></td></tr>
+                    <tr><td><span class="day-num">21</span><span class="reading-text">Hb 8-10</span></td></tr>
+                    <tr><td><span class="day-num">22</span><span class="reading-text">Hb 11-13</span></td></tr>
+                    <tr><td><span class="day-num">23</span><span class="reading-text">Tg 1-4</span></td></tr>
+                    <tr><td><span class="day-num">24</span><span class="reading-text">Tg 5 + 1Pe 1-3</span></td></tr>
+                    <tr><td><span class="day-num">25</span><span class="reading-text">1Pe 4-5 + 2Pe 1-2</span></td></tr>
+                    <tr><td><span class="day-num">26</span><span class="reading-text">2Pe 3 + 1Jo 1-3</span></td></tr>
+                    <tr><td><span class="day-num">27</span><span class="reading-text">1Jo 4-5 + 2/3Jo + Jd</span></td></tr>
+                    <tr><td><span class="day-num">28</span><span class="reading-text">Ap 1-3</span></td></tr>
+                    <tr><td><span class="day-num">29</span><span class="reading-text">Ap 4-8</span></td></tr>
+                    <tr><td><span class="day-num">30</span><span class="reading-text">Ap 9-12</span></td></tr>
+                    <tr><td><span class="day-num">31</span><span class="reading-text">Ap 13-22</span></td></tr>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Para cobrir o ano inteiro, copie os blocos de Março..Dezembro do index.html
+             e cole aqui dentro, mantendo a estrutura month-card/month-name/day-num/reading-text. -->
+    </template>
+
+    <script>
+        const YEAR = 2026;
+        const REFLECTIONS_URL = 'https://missao-api-67a4018a1826.herokuapp.com/api/sheets/read?spreadsheetId=1FuTkg3ngUbkz8Kq-XNL9o7R82ydb6FpiYoKWYdXZQcA&range=A:E';
+        const MONTHS_PT = [
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+            'Julho',
+            'Agosto',
+            'Setembro',
+            'Outubro',
+            'Novembro',
+            'Dezembro',
+        ];
+
+        const monthNameToIndex = new Map(MONTHS_PT.map((m, i) => [m.toLowerCase(), i]));
+
+        function pad2(n) {
+            return String(n).padStart(2, '0');
+        }
+
+        function isoDate(y, mIndex, d) {
+            return `${y}-${pad2(mIndex + 1)}-${pad2(d)}`;
+        }
+
+        function parsePlanFromTemplate() {
+            const tpl = document.getElementById('planSource');
+            const frag = tpl.content.cloneNode(true);
+            const map = new Map();
+
+            frag.querySelectorAll('.month-card').forEach((card) => {
+                const rawMonth = (card.querySelector('.month-name')?.textContent || '').trim();
+                const monthKey = rawMonth.toLowerCase();
+                const monthIndex = monthNameToIndex.get(monthKey);
+                if (monthIndex === undefined) return;
+
+                card.querySelectorAll('tr').forEach((tr) => {
+                    const dayStr = (tr.querySelector('.day-num')?.textContent || '').trim();
+                    const reading = (tr.querySelector('.reading-text')?.textContent || '').trim();
+                    const day = Number(dayStr);
+                    if (!Number.isFinite(day) || day <= 0) return;
+                    if (!reading) return;
+                    map.set(isoDate(YEAR, monthIndex, day), reading);
+                });
+            });
+
+            return map;
+        }
+
+        const plan = parsePlanFromTemplate();
+
+        const reflectionsState = {
+            loading: true,
+            error: null,
+            byDate: new Map(),
+        };
+
+        const state = {
+            monthIndex: 0,
+            selectedDate: null,
+        };
+
+        const els = {
+            monthLabel: document.getElementById('monthLabel'),
+            yearLabel: document.getElementById('yearLabel'),
+            grid: document.getElementById('calendarGrid'),
+            prev: document.getElementById('prevMonth'),
+            next: document.getElementById('nextMonth'),
+            progressValue: document.getElementById('progressValue'),
+            progressFill: document.getElementById('progressFill'),
+            readingDate: document.getElementById('readingDate'),
+            readingText: document.getElementById('readingText'),
+            refDate: document.getElementById('refDate'),
+            refState: document.getElementById('refState'),
+            refList: document.getElementById('refList'),
+        };
+
+        function toBool(value) {
+            if (typeof value === 'boolean') return value;
+            const s = String(value ?? '').trim().toLowerCase();
+            return s === 'true' || s === '1' || s === 'sim' || s === 'yes';
+        }
+
+        function parsePtBrSheetTimestamp(ts) {
+            const raw = String(ts ?? '').trim();
+            if (!raw) return null;
+            const [datePart, timePart] = raw.split(' ');
+            if (!datePart) return null;
+            const [dd, mm, yyyy] = datePart.split('/').map((x) => Number(x));
+            if (!Number.isFinite(dd) || !Number.isFinite(mm) || !Number.isFinite(yyyy)) return null;
+            let hh = 0;
+            let min = 0;
+            let ss = 0;
+            if (timePart) {
+                const [hhs, mins, sss] = timePart.split(':').map((x) => Number(x));
+                if (Number.isFinite(hhs)) hh = hhs;
+                if (Number.isFinite(mins)) min = mins;
+                if (Number.isFinite(sss)) ss = sss;
+            }
+            return new Date(yyyy, mm - 1, dd, hh, min, ss);
+        }
+
+        function dateKeyFromSheetItem(item) {
+            const dt = parsePtBrSheetTimestamp(item?.['Carimbo de data/hora']);
+            if (!dt) return null;
+            return isoDate(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        }
+
+        function formatDateKeyToPt(dateKey) {
+            if (!dateKey) return '—';
+            const [y, m, d] = dateKey.split('-').map((x) => Number(x));
+            const monthName = MONTHS_PT[(m || 1) - 1] || '—';
+            return `${pad2(d)} de ${monthName} de ${y}`;
+        }
+
+        function formatTimeFromTimestamp(ts) {
+            const dt = parsePtBrSheetTimestamp(ts);
+            if (!dt) return '';
+            return `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`;
+        }
+
+        function activeDateKey() {
+            if (state.selectedDate) return state.selectedDate;
+            const now = new Date();
+            if (now.getFullYear() === YEAR) {
+                return isoDate(YEAR, now.getMonth(), now.getDate());
+            }
+            return null;
+        }
+
+        function dayOfYear(dateKey) {
+            if (!dateKey) return null;
+            const [y, m, d] = dateKey.split('-').map((x) => Number(x));
+            if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) return null;
+            const dt = new Date(y, m - 1, d);
+            const start = new Date(y, 0, 1);
+            const diffDays = Math.floor((dt - start) / 86400000) + 1;
+            return Number.isFinite(diffDays) ? diffDays : null;
+        }
+
+        function renderProgress() {
+            const key = activeDateKey();
+            const doy = dayOfYear(key);
+            if (!doy || doy < 1 || doy > 366) {
+                els.progressValue.textContent = 'Dia — de 365';
+                els.progressFill.style.width = '0%';
+                return;
+            }
+
+            const totalDays = 365;
+            const clamped = Math.min(Math.max(doy, 1), totalDays);
+            const pct = (clamped / totalDays) * 100;
+            els.progressValue.textContent = `Dia ${clamped} de ${totalDays}`;
+            els.progressFill.style.width = `${pct}%`;
+        }
+
+        function renderReading() {
+            const key = activeDateKey();
+            els.readingDate.textContent = formatDateKeyToPt(key);
+            if (!key) {
+                els.readingText.textContent = 'Selecione um dia';
+                return;
+            }
+            els.readingText.textContent = plan.get(key) || 'Sem leitura cadastrada';
+        }
+
+        function renderReflections() {
+            const key = activeDateKey();
+            els.refDate.textContent = formatDateKeyToPt(key);
+
+            if (reflectionsState.loading) {
+                els.refList.style.display = 'none';
+                els.refState.style.display = 'block';
+                els.refState.textContent = 'Carregando reflexões…';
+                return;
+            }
+
+            if (reflectionsState.error) {
+                els.refList.style.display = 'none';
+                els.refState.style.display = 'block';
+                els.refState.textContent = 'Não foi possível carregar as reflexões.';
+                return;
+            }
+
+            if (!key) {
+                els.refList.style.display = 'none';
+                els.refState.style.display = 'block';
+                els.refState.textContent = 'Selecione um dia para ver reflexões.';
+                return;
+            }
+
+            const list = reflectionsState.byDate.get(key) || [];
+            if (!list.length) {
+                els.refList.style.display = 'none';
+                els.refState.style.display = 'block';
+                els.refState.textContent = 'Nenhuma reflexão para este dia.';
+                return;
+            }
+
+            els.refState.style.display = 'none';
+            els.refList.style.display = 'flex';
+            els.refList.innerHTML = '';
+
+            list.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'reflectionCard';
+
+                const meta = document.createElement('div');
+                meta.className = 'reflectionMeta';
+
+                const name = document.createElement('div');
+                name.className = 'name';
+                name.textContent = String(item?.['Seu Nome Completo'] ?? 'Anônimo').trim() || 'Anônimo';
+
+                const time = document.createElement('div');
+                time.className = 'time';
+                time.textContent = formatTimeFromTimestamp(item?.['Carimbo de data/hora']);
+
+                meta.appendChild(name);
+                meta.appendChild(time);
+
+                const text = document.createElement('div');
+                text.className = 'reflectionText';
+                text.textContent = String(item?.['Sua Reflexão e Devocional'] ?? '').trim();
+
+                card.appendChild(meta);
+                card.appendChild(text);
+                els.refList.appendChild(card);
+            });
+        }
+
+        async function fetchReflections() {
+            reflectionsState.loading = true;
+            reflectionsState.error = null;
+            renderReflections();
+
+            try {
+                const res = await fetch(REFLECTIONS_URL);
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+                const data = await res.json();
+                const rows = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : []);
+
+                const byDate = new Map();
+                rows.forEach((item) => {
+                    if (!toBool(item?.Exibir)) return;
+                    const key = dateKeyFromSheetItem(item);
+                    if (!key) return;
+                    const arr = byDate.get(key) || [];
+                    arr.push(item);
+                    byDate.set(key, arr);
+                });
+
+                reflectionsState.byDate = byDate;
+                reflectionsState.loading = false;
+                reflectionsState.error = null;
+                renderReflections();
+            } catch (err) {
+                reflectionsState.loading = false;
+                reflectionsState.error = err;
+                renderReflections();
+            }
+        }
+
+        function daysInMonth(year, monthIndex) {
+            return new Date(year, monthIndex + 1, 0).getDate();
+        }
+
+        function firstDayOfMonth(year, monthIndex) {
+            return new Date(year, monthIndex, 1).getDay();
+        }
+
+        function isToday(y, mIndex, d) {
+            const t = new Date();
+            return t.getFullYear() === y && t.getMonth() === mIndex && t.getDate() === d;
+        }
+
+        function render() {
+            els.monthLabel.textContent = MONTHS_PT[state.monthIndex];
+            els.yearLabel.textContent = String(YEAR);
+
+            els.prev.disabled = state.monthIndex === 0;
+            els.next.disabled = state.monthIndex === 11;
+
+            els.grid.innerHTML = '';
+
+            const total = daysInMonth(YEAR, state.monthIndex);
+            const offset = firstDayOfMonth(YEAR, state.monthIndex);
+
+            for (let i = 0; i < offset; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'cell';
+                empty.setAttribute('aria-disabled', 'true');
+                empty.tabIndex = -1;
+                els.grid.appendChild(empty);
+            }
+
+            for (let d = 1; d <= total; d++) {
+                const dateKey = isoDate(YEAR, state.monthIndex, d);
+                const hasReading = plan.has(dateKey);
+
+                const cell = document.createElement('button');
+                cell.type = 'button';
+                cell.className = 'cell';
+                if (hasReading) cell.classList.add('hasReading');
+                if (isToday(YEAR, state.monthIndex, d)) cell.classList.add('isToday');
+                if (state.selectedDate === dateKey) cell.classList.add('isSelected');
+
+                cell.setAttribute('role', 'gridcell');
+                cell.setAttribute('aria-label', `${d} de ${MONTHS_PT[state.monthIndex]}`);
+
+                const span = document.createElement('span');
+                span.className = 'd';
+                span.textContent = String(d);
+                cell.appendChild(span);
+
+                cell.addEventListener('click', () => {
+                    state.selectedDate = dateKey;
+                    render();
+                });
+
+                els.grid.appendChild(cell);
+            }
+
+            renderReflections();
+            renderReading();
+            renderProgress();
+        }
+
+        els.prev.addEventListener('click', () => {
+            state.monthIndex = Math.max(0, state.monthIndex - 1);
+            state.selectedDate = null;
+            render();
+        });
+
+        els.next.addEventListener('click', () => {
+            state.monthIndex = Math.min(11, state.monthIndex + 1);
+            state.selectedDate = null;
+            render();
+        });
+
+        (function init() {
+            const now = new Date();
+            if (now.getFullYear() === YEAR) {
+                state.monthIndex = now.getMonth();
+            }
+            render();
+            fetchReflections();
+        })();
+    </script>
+</body>
+</html>
