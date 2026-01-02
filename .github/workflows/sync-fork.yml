@@ -2,7 +2,7 @@ name: Sync Fork Automático
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
