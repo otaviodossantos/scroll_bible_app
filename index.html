@@ -500,8 +500,120 @@
             color: var(--muted);
         }
 
+        .storyBtn {
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(226, 232, 240, 0.92);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: -0.2px;
+            padding: 0 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .storyBtn svg {
+            width: 16px;
+            height: 16px;
+            display: block;
+            fill: currentColor;
+            opacity: 0.92;
+        }
+
+        .pulseHint {
+            animation: pulseHint 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulseHint {
+            0% {
+                transform: translateZ(0) scale(1);
+                box-shadow: 0 0 0 rgba(49, 215, 230, 0.0);
+            }
+            50% {
+                transform: translateZ(0) scale(1.02);
+                box-shadow: 0 0 0 6px rgba(49, 215, 230, 0.10);
+            }
+            100% {
+                transform: translateZ(0) scale(1);
+                box-shadow: 0 0 0 rgba(49, 215, 230, 0.0);
+            }
+        }
+
+        .storyBtn:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .storyPanel {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .storyPanelTop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .storyPanelTop .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: rgba(226, 232, 240, 0.78);
+            margin: 0;
+        }
+
+        .storyActions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .storyPreviewWrap {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(0, 0, 0, 0.22);
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #storyPreview {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .storyModalContent {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .storyModalActions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .nav button:active { transform: none; }
+            .pulseHint { animation: none; }
         }
     </style>
 </head>
@@ -551,13 +663,45 @@
         <section class="readingInline" aria-live="polite">
             <div class="readingInlineHeader">
                 <p class="h">Leitura do dia</p>
-                <div class="date" id="readingDate">—</div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="date" id="readingDate">—</div>
+                    <button class="storyBtn" id="openStoryModal" type="button">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        Compartilhe
+                    </button>
+                </div>
             </div>
             <div class="reading">
                 <div class="label">Leitura</div>
                 <div class="text" id="readingText">—</div>
             </div>
         </section>
+
+        <div class="sheetOverlay" id="storyModal">
+            <div class="sheet" role="dialog" aria-modal="true" aria-label="Criar Stories">
+                <div class="sheetHandle"></div>
+                <div class="sheetHeader">
+                    <div class="date">
+                        <div class="day">Stories</div>
+                        <div class="sub">Escolha uma foto e compartilhe</div>
+                    </div>
+                    <button id="closeStoryModal" type="button" aria-label="Fechar">×</button>
+                </div>
+                <div class="sheetContent storyModalContent">
+                    <div class="storyPreviewWrap">
+                        <canvas id="storyPreview" width="450" height="800" aria-label="Pré-visualização do Stories"></canvas>
+                    </div>
+                    <div class="storyModalActions">
+                        <input id="storyPhotoInput" type="file" accept="image/*" capture="environment" style="display:none;" />
+                        <button class="storyBtn" id="pickStoryPhoto" type="button">Selecione a Foto</button>
+                        <button class="storyBtn" id="shareComposedStory" type="button" disabled>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                            Compartilhar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <section class="reflections" aria-live="polite">
             <div class="reflectionsHeader">
@@ -1124,9 +1268,25 @@
             progressFill: document.getElementById('progressFill'),
             readingDate: document.getElementById('readingDate'),
             readingText: document.getElementById('readingText'),
+            openStoryModal: document.getElementById('openStoryModal'),
+            storyModal: document.getElementById('storyModal'),
+            closeStoryModal: document.getElementById('closeStoryModal'),
+            storyPhotoInput: document.getElementById('storyPhotoInput'),
+            pickStoryPhoto: document.getElementById('pickStoryPhoto'),
+            shareComposedStory: document.getElementById('shareComposedStory'),
+            shareOverlayOnly: document.getElementById('shareOverlayOnly'),
+            storyPreview: document.getElementById('storyPreview'),
             refDate: document.getElementById('refDate'),
             refState: document.getElementById('refState'),
             refList: document.getElementById('refList'),
+        };
+
+        const LOGO_PATH = 'M4537 9970 c-33 -39 -41 -79 -26 -132 10 -39 201 -232 1970 -1999 l1958 -1956 42 -89 c63 -136 78 -189 89 -304 6 -58 13 -566 16 -1130 l6 -1025 -1283 1280 c-1174 1171 -1351 1346 -1519 1500 -79 73 -116 93 -226 120 -170 44 -351 32 -473 -30 -60 -30 -301 -265 -1801 -1762 l-1105 -1102 -5 1427 -5 1427 -43 75 c-66 115 -105 163 -163 202 -63 42 -155 82 -237 103 -79 21 -432 28 -923 18 l-396 -8 -88 -44 c-117 -58 -200 -140 -254 -254 -78 -163 -72 93 -68 -2668 2 -1880 6 -2493 15 -2551 14 -84 68 -252 109 -332 110 -218 298 -421 511 -550 113 -69 210 -109 362 -149 108 -28 127 -30 300 -30 133 -1 208 4 265 16 173 35 357 110 490 200 78 53 240 212 1745 1712 690 687 1330 1324 1422 1415 l167 164 1468 -1465 c1414 -1410 1773 -1762 1865 -1829 213 -155 492 -231 798 -217 284 12 547 109 754 276 88 71 214 213 285 321 93 143 181 375 181 481 0 26 5 51 10 54 7 4 10 737 10 2166 0 1438 -3 2158 -10 2154 -7 -4 -10 84 -10 257 0 145 -5 292 -10 328 -30 185 -182 537 -330 760 -161 244 -121 201 -1724 1808 l-1201 1204 -140 69 c-146 71 -230 99 -302 99 -23 0 -45 5 -48 10 -4 7 -420 10 -1215 10 l-1208 0 -25 -30z';
+
+        const story = {
+            photoFile: null,
+            photoUrl: null,
+            photoImg: null,
         };
 
         function toBool(value) {
@@ -1206,6 +1366,386 @@
             const pct = (clamped / totalDays) * 100;
             els.progressValue.textContent = `Dia ${clamped} de ${totalDays}`;
             els.progressFill.style.width = `${pct}%`;
+        }
+
+        function getStoryData() {
+            const key = activeDateKey();
+            const reading = key ? (plan.get(key) || 'Sem leitura cadastrada') : 'Selecione um dia';
+
+            const totalDays = 365;
+            const doy = dayOfYear(key);
+            const dayNumber = doy && doy >= 1 && doy <= 366 ? Math.min(Math.max(doy, 1), totalDays) : null;
+            const pct = dayNumber ? (dayNumber / totalDays) : 0;
+
+            return {
+                dateKey: key,
+                dateLabel: formatDateKeyToPt(key),
+                reading,
+                dayNumber,
+                totalDays,
+                pct,
+            };
+        }
+
+        function roundedRectPath(ctx, x, y, w, h, r) {
+            const radius = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.arcTo(x + w, y, x + w, y + h, radius);
+            ctx.arcTo(x + w, y + h, x, y + h, radius);
+            ctx.arcTo(x, y + h, x, y, radius);
+            ctx.arcTo(x, y, x + w, y, radius);
+            ctx.closePath();
+        }
+
+        function fillRoundedRect(ctx, x, y, w, h, r, fillStyle) {
+            ctx.save();
+            roundedRectPath(ctx, x, y, w, h, r);
+            ctx.fillStyle = fillStyle;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function strokeRoundedRect(ctx, x, y, w, h, r, strokeStyle, lineWidth = 2) {
+            ctx.save();
+            roundedRectPath(ctx, x, y, w, h, r);
+            ctx.strokeStyle = strokeStyle;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+            const words = String(text || '').replace(/\s+/g, ' ').trim().split(' ');
+            const lines = [];
+            let line = '';
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line ? `${line} ${words[i]}` : words[i];
+                if (ctx.measureText(testLine).width <= maxWidth) {
+                    line = testLine;
+                    continue;
+                }
+
+                if (line) lines.push(line);
+                line = words[i];
+                if (maxLines && lines.length >= maxLines - 1) break;
+            }
+            if (line && (!maxLines || lines.length < maxLines)) lines.push(line);
+
+            const clipped = maxLines && lines.length > maxLines ? lines.slice(0, maxLines) : lines;
+            clipped.forEach((l, idx) => {
+                ctx.fillText(l, x, y + idx * lineHeight);
+            });
+
+            return clipped.length;
+        }
+
+        function countWrappedLines(ctx, text, maxWidth, maxLines) {
+            const words = String(text || '').replace(/\s+/g, ' ').trim().split(' ');
+            if (!words.length || (words.length === 1 && !words[0])) return 1;
+
+            let lines = 0;
+            let line = '';
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line ? `${line} ${words[i]}` : words[i];
+                if (ctx.measureText(testLine).width <= maxWidth) {
+                    line = testLine;
+                    continue;
+                }
+
+                if (line) lines += 1;
+                line = words[i];
+                if (maxLines && lines >= maxLines) return maxLines;
+            }
+
+            if (line) lines += 1;
+            return maxLines ? Math.min(lines, maxLines) : lines;
+        }
+
+        function drawCheckIcon(ctx, cx, cy, r) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(49, 215, 230, 0.95)';
+            ctx.fill();
+            ctx.shadowColor = 'rgba(49, 215, 230, 0.35)';
+            ctx.shadowBlur = 24;
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(5, 5, 16, 0.9)';
+            ctx.lineWidth = Math.max(6, r * 0.28);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            ctx.beginPath();
+            ctx.moveTo(cx - r * 0.45, cy + r * 0.02);
+            ctx.lineTo(cx - r * 0.12, cy + r * 0.34);
+            ctx.lineTo(cx + r * 0.52, cy - r * 0.34);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawLogo(ctx, x, y, size) {
+            const p = new Path2D(LOGO_PATH);
+            const viewW = 10760;
+            const viewH = 10000;
+            const scale = size / Math.max(viewW, viewH);
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+            ctx.fillStyle = 'rgba(49, 215, 230, 0.92)';
+            ctx.shadowColor = 'rgba(49, 215, 230, 0.28)';
+            ctx.shadowBlur = 24;
+            ctx.fill(p);
+            ctx.shadowBlur = 0;
+            ctx.restore();
+        }
+
+        function drawStoryOverlay(ctx, data, W, H) {
+            const margin = Math.round(W * 0.08);
+            const cardW = W - margin * 2;
+            const cardX = margin;
+
+            const titleFont = Math.round(W * 0.046);
+            const dateFont = Math.round(W * 0.024);
+            const labelFont = Math.round(W * 0.020);
+            const readingFont = Math.round(W * 0.056);
+            const metaFont = Math.round(W * 0.022);
+
+            const titleH = Math.round(titleFont * 1.08);
+            const dateH = Math.round(dateFont * 1.1);
+            const progressH = Math.round(H * 0.055);
+            const footerH = Math.round(metaFont * 1.1);
+            const gap = Math.round(H * 0.010);
+
+            const readingLabelY = Math.round(H * 0.022);
+            const readingTextTop = Math.round(H * 0.065);
+            const readingBottomPad = Math.round(H * 0.026);
+            const readingLineHeight = Math.round(readingFont * 1.12);
+            const readingMaxLines = 5;
+
+            const measureWidth = cardW - Math.round(W * 0.056);
+            ctx.save();
+            ctx.font = `900 ${readingFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            const neededLines = countWrappedLines(ctx, data.reading || '—', measureWidth, readingMaxLines);
+            ctx.restore();
+
+            const minReadingH = Math.round(H * 0.12);
+            const fitReadingH = readingTextTop + neededLines * readingLineHeight + readingBottomPad;
+            const maxReadingH = Math.round(H * 0.22);
+            const readingH = Math.min(maxReadingH, Math.max(minReadingH, fitReadingH));
+
+            const totalH = titleH + dateH + progressH + readingH + footerH + gap * 4;
+            const bottomPad = Math.round(H * 0.06);
+            let y = H - bottomPad - totalH;
+
+            ctx.save();
+            ctx.font = `900 ${titleFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            ctx.fillStyle = 'rgba(226, 232, 240, 0.96)';
+            ctx.fillText('Scroll Bible 2026', cardX, y + titleH);
+            ctx.restore();
+            y += titleH + gap;
+
+            ctx.save();
+            ctx.font = `700 ${dateFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            ctx.fillStyle = 'rgba(226, 232, 240, 0.74)';
+            ctx.fillText('Trocando o feed, pela fome.', cardX, y + dateH);
+            ctx.restore();
+            y += dateH + gap;
+
+            fillRoundedRect(ctx, cardX, y, cardW, progressH, Math.round(W * 0.03), 'rgba(0, 0, 0, 0.42)');
+            strokeRoundedRect(ctx, cardX, y, cardW, progressH, Math.round(W * 0.03), 'rgba(255, 255, 255, 0.16)', 2);
+
+            ctx.save();
+            ctx.font = `800 ${Math.round(W * 0.026)}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            ctx.fillStyle = 'rgba(226, 232, 240, 0.90)';
+            const progressLabel = data.dayNumber ? `Progresso: Dia ${data.dayNumber} de ${data.totalDays}` : 'Progresso: —';
+            ctx.fillText(progressLabel, cardX + Math.round(W * 0.028), y + Math.round(progressH * 0.42));
+            ctx.restore();
+
+            const barX = cardX + Math.round(W * 0.028);
+            const barY = y + Math.round(progressH * 0.62);
+            const barW = cardW - Math.round(W * 0.056);
+            const barH = Math.round(progressH * 0.14);
+            fillRoundedRect(ctx, barX, barY, barW, barH, 999, 'rgba(255, 255, 255, 0.14)');
+            fillRoundedRect(ctx, barX, barY, Math.max(0, Math.min(1, data.pct)) * barW, barH, 999, 'rgba(226, 232, 240, 0.92)');
+
+            y += progressH + gap;
+
+            fillRoundedRect(ctx, cardX, y, cardW, readingH, Math.round(W * 0.034), 'rgba(0, 0, 0, 0.42)');
+            strokeRoundedRect(ctx, cardX, y, cardW, readingH, Math.round(W * 0.034), 'rgba(255, 255, 255, 0.16)', 2);
+
+            ctx.save();
+            ctx.font = `900 ${labelFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            ctx.fillStyle = 'rgba(226, 232, 240, 0.80)';
+            ctx.fillText('LEITURA DO DIA', cardX + Math.round(W * 0.028), y + readingLabelY);
+            ctx.restore();
+
+            drawCheckIcon(ctx, cardX + cardW - Math.round(W * 0.058), y + readingLabelY, Math.round(W * 0.025));
+
+            ctx.save();
+            ctx.font = `900 ${readingFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            ctx.fillStyle = 'rgba(49, 215, 230, 0.96)';
+            wrapText(ctx, data.reading || '—', cardX + Math.round(W * 0.028), y + readingTextTop, cardW - Math.round(W * 0.056), readingLineHeight, readingMaxLines);
+            ctx.restore();
+
+            y += readingH + gap;
+
+            ctx.save();
+            ctx.font = `700 ${metaFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial`;
+            ctx.fillStyle = 'rgba(226, 232, 240, 0.65)';
+            const footerLogoSize = Math.round(W * 0.052);
+            drawLogo(ctx, cardX, y + Math.round(footerH * 0.05), footerLogoSize);
+            ctx.fillText('@missaojovem.ofc', cardX + footerLogoSize + Math.round(W * 0.016), y + footerH);
+            ctx.restore();
+        }
+
+        function drawImageCover(ctx, img, W, H) {
+            const iw = img.naturalWidth || img.width;
+            const ih = img.naturalHeight || img.height;
+            if (!iw || !ih) return;
+            const scale = Math.max(W / iw, H / ih);
+            const sw = iw * scale;
+            const sh = ih * scale;
+            const dx = (W - sw) / 2;
+            const dy = (H - sh) / 2;
+            ctx.drawImage(img, dx, dy, sw, sh);
+        }
+
+        function drawPhotoShade(ctx, W, H) {
+            ctx.save();
+            const g = ctx.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, 'rgba(0, 0, 0, 0.00)');
+            g.addColorStop(0.25, 'rgba(0, 0, 0, 0.30)');
+            g.addColorStop(0.55, 'rgba(0, 0, 0, 0.78)');
+            g.addColorStop(1, 'rgba(0, 0, 0, 0.94)');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+        }
+
+        function drawStoryComposed(data, img, W, H) {
+            const canvas = document.createElement('canvas');
+            canvas.width = W;
+            canvas.height = H;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) throw new Error('Canvas indisponível');
+            ctx.clearRect(0, 0, W, H);
+            drawImageCover(ctx, img, W, H);
+            drawPhotoShade(ctx, W, H);
+            drawStoryOverlay(ctx, data, W, H);
+            return canvas;
+        }
+
+        async function generateStoryPng() {
+            const data = getStoryData();
+            const W = 1080;
+            const H = 1920;
+            const canvas = drawStoryOverlayOnly(data, W, H);
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+            if (!blob) throw new Error('Não foi possível gerar o PNG');
+
+            const safeDate = (data.dateKey || 'sem-data').replace(/[^0-9\-]/g, '');
+            const fileName = `scroll-bible-2026-${safeDate}.png`;
+
+            const file = new File([blob], fileName, { type: 'image/png' });
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Scroll Bible 2026',
+                        text: data.reading || '',
+                    });
+                    return;
+                } catch (err) {
+                    if (err && typeof err === 'object' && 'name' in err && err.name === 'AbortError') {
+                        return;
+                    }
+                }
+            }
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+
+        function drawStoryOverlayOnly(data, W, H) {
+            const canvas = document.createElement('canvas');
+            canvas.width = W;
+            canvas.height = H;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) throw new Error('Canvas indisponível');
+            ctx.clearRect(0, 0, W, H);
+            drawStoryOverlay(ctx, data, W, H);
+            return canvas;
+        }
+
+        function updateStoryPreview() {
+            if (!els.storyPreview) return;
+            const ctx = els.storyPreview.getContext('2d');
+            if (!ctx) return;
+
+            const data = getStoryData();
+            const W = els.storyPreview.width;
+            const H = els.storyPreview.height;
+
+            ctx.clearRect(0, 0, W, H);
+            if (story.photoImg) {
+                drawImageCover(ctx, story.photoImg, W, H);
+                drawPhotoShade(ctx, W, H);
+                drawStoryOverlay(ctx, data, W, H);
+            } else {
+                fillRoundedRect(ctx, 14, 14, W - 28, H - 28, 24, 'rgba(0, 0, 0, 0.35)');
+                ctx.save();
+                ctx.font = '800 22px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial';
+                ctx.fillStyle = 'rgba(226, 232, 240, 0.78)';
+                ctx.fillText('Escolha uma foto para gerar o Stories', 34, 64);
+                ctx.restore();
+                drawStoryOverlay(ctx, data, W, H);
+            }
+        }
+
+        async function shareComposedStory() {
+            if (!story.photoImg) throw new Error('Selecione uma foto primeiro');
+            const data = getStoryData();
+            const canvas = drawStoryComposed(data, story.photoImg, 1080, 1920);
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+            if (!blob) throw new Error('Não foi possível gerar o PNG');
+
+            const safeDate = (data.dateKey || 'sem-data').replace(/[^0-9\-]/g, '');
+            const fileName = `scroll-bible-2026-stories-${safeDate}.png`;
+            const file = new File([blob], fileName, { type: 'image/png' });
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Scroll Bible 2026',
+                        text: data.reading || '',
+                    });
+                    return;
+                } catch (err) {
+                    if (err && typeof err === 'object' && 'name' in err && err.name === 'AbortError') {
+                        return;
+                    }
+                }
+            }
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
         }
 
         function renderReading() {
@@ -1380,6 +1920,7 @@
             renderReflections();
             renderReading();
             renderProgress();
+            updateStoryPreview();
         }
 
         els.prev.addEventListener('click', () => {
@@ -1401,6 +1942,87 @@
             }
             render();
             fetchReflections();
+
+            if (els.openStoryModal) {
+                els.openStoryModal.classList.add('pulseHint');
+            }
+
+            function openStoryModal() {
+                if (!els.storyModal) return;
+                els.storyModal.classList.add('open');
+                updateStoryPreview();
+            }
+
+            function closeStoryModal() {
+                if (!els.storyModal) return;
+                els.storyModal.classList.remove('open');
+            }
+
+            if (els.openStoryModal) {
+                els.openStoryModal.addEventListener('click', openStoryModal);
+            }
+
+            if (els.closeStoryModal) {
+                els.closeStoryModal.addEventListener('click', closeStoryModal);
+            }
+
+            if (els.storyModal) {
+                els.storyModal.addEventListener('click', (e) => {
+                    if (e.target === els.storyModal) closeStoryModal();
+                });
+            }
+
+            if (els.pickStoryPhoto && els.storyPhotoInput) {
+                els.pickStoryPhoto.addEventListener('click', () => {
+                    els.storyPhotoInput.click();
+                });
+
+                els.storyPhotoInput.addEventListener('change', async () => {
+                    const file = els.storyPhotoInput.files && els.storyPhotoInput.files[0];
+                    if (!file) return;
+
+                    if (story.photoUrl) URL.revokeObjectURL(story.photoUrl);
+                    story.photoFile = file;
+                    story.photoUrl = URL.createObjectURL(file);
+
+                    const img = new Image();
+                    img.decoding = 'async';
+                    img.src = story.photoUrl;
+                    await img.decode();
+                    story.photoImg = img;
+
+                    if (els.shareComposedStory) {
+                        els.shareComposedStory.disabled = false;
+                        els.shareComposedStory.classList.add('pulseHint');
+                    }
+                    updateStoryPreview();
+                });
+            }
+
+            if (els.shareOverlayOnly) {
+                els.shareOverlayOnly.addEventListener('click', async () => {
+                    els.shareOverlayOnly.disabled = true;
+                    try {
+                        await generateStoryPng();
+                    } finally {
+                        els.shareOverlayOnly.disabled = false;
+                    }
+                });
+            }
+
+            if (els.shareComposedStory) {
+                els.shareComposedStory.addEventListener('click', async () => {
+                    els.shareComposedStory.disabled = true;
+                    try {
+                        els.shareComposedStory.classList.remove('pulseHint');
+                        await shareComposedStory();
+                    } finally {
+                        els.shareComposedStory.disabled = !story.photoImg;
+                    }
+                });
+            }
+
+            updateStoryPreview();
         })();
     </script>
 </body>
