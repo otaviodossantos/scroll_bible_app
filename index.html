@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Plano de Leitura 2026</title>
+    <title>Missão Jovem - Scroll Bible 2026 - Plano de Leitura</title>
+    <meta name="description" content="Plano de leitura bíblica 2026 para a Missão Jovem">
+    <meta name="keywords" content="missão jovem, scroll bible, plano de leitura, bíblia, 2026">
     <style>
         :root {
             --brand-lime: #d8ff2f;
@@ -18,6 +20,8 @@
             --border: rgba(255, 255, 255, 0.12);
             --text: #e2e8f0;
             --muted: rgba(226, 232, 240, 0.68);
+
+            --title-h: 0px;
         }
 
         * { box-sizing: border-box; }
@@ -53,28 +57,34 @@
         }
 
         .topbar {
-            position: sticky;
+            position: relative;
+            padding: var(--title-h) 0 0;
+        }
+
+        .title {
+            position: fixed;
             top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(430px, 100%);
             z-index: 5;
             padding: 12px 12px 10px;
             background: rgba(5, 5, 16, 0.55);
             -webkit-backdrop-filter: blur(14px);
             backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-            .topbar {
-                background: rgba(5, 5, 16, 0.92);
-            }
-        }
-
-        .title {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             gap: 12px;
-            padding: 0 2px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+            .title {
+                background: rgba(5, 5, 16, 0.92);
+            }
         }
 
         .titleText {
@@ -121,10 +131,13 @@
             align-items: center;
             gap: 10px;
             margin-top: 10px;
+            padding: 0 12px;
         }
 
         .progress {
             margin-top: 10px;
+            margin-left: 12px;
+            margin-right: 12px;
             padding: 10px 12px;
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.10);
@@ -337,6 +350,14 @@
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reflectionCard.featured {
+            border-color: rgba(49, 215, 230, 0.55);
+            background: rgba(49, 215, 230, 0.08);
+            box-shadow: 0 12px 30px rgba(49, 215, 230, 0.10);
         }
 
         .reflectionMeta {
@@ -364,6 +385,34 @@
             line-height: 1.45;
             color: rgba(226, 232, 240, 0.88);
             white-space: pre-wrap;
+        }
+
+        .reflectionText.clamped {
+            max-height: 92px;
+            overflow: hidden;
+        }
+
+        .reflectionCard.expanded .reflectionText {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .refMore {
+            margin-top: 10px;
+            height: 34px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(226, 232, 240, 0.92);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: -0.2px;
+            padding: 0 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
         }
 
         .reflectionsState {
@@ -623,7 +672,7 @@
             <div class="title">
                 <div class="titleText">
                     <h1><span class="brand">Scroll</span> <span class="accent">Bible</span> 2026</h1>
-                    <div style="font-size: 11px; color: rgba(226, 232, 240, 0.7);">Plano de leitura</div>
+                    <div style="font-size: 11px; color: rgba(226, 232, 240, 0.7);">Trocando o feed, pela fome.</div>
                 </div>
                 <div class="appLogo" aria-hidden="true">
                     <svg viewBox="0 0 10760 10000" xmlns="http://www.w3.org/2000/svg"><path d="M4537 9970 c-33 -39 -41 -79 -26 -132 10 -39 201 -232 1970 -1999 l1958 -1956 42 -89 c63 -136 78 -189 89 -304 6 -58 13 -566 16 -1130 l6 -1025 -1283 1280 c-1174 1171 -1351 1346 -1519 1500 -79 73 -116 93 -226 120 -170 44 -351 32 -473 -30 -60 -30 -301 -265 -1801 -1762 l-1105 -1102 -5 1427 -5 1427 -43 75 c-66 115 -105 163 -163 202 -63 42 -155 82 -237 103 -79 21 -432 28 -923 18 l-396 -8 -88 -44 c-117 -58 -200 -140 -254 -254 -78 -163 -72 93 -68 -2668 2 -1880 6 -2493 15 -2551 14 -84 68 -252 109 -332 110 -218 298 -421 511 -550 113 -69 210 -109 362 -149 108 -28 127 -30 300 -30 133 -1 208 4 265 16 173 35 357 110 490 200 78 53 240 212 1745 1712 690 687 1330 1324 1422 1415 l167 164 1468 -1465 c1414 -1410 1773 -1762 1865 -1829 213 -155 492 -231 798 -217 284 12 547 109 754 276 88 71 214 213 285 321 93 143 181 375 181 481 0 26 5 51 10 54 7 4 10 737 10 2166 0 1438 -3 2158 -10 2154 -7 -4 -10 84 -10 257 0 145 -5 292 -10 328 -30 185 -182 537 -330 760 -161 244 -121 201 -1724 1808 l-1201 1204 -140 69 c-146 71 -230 99 -302 99 -23 0 -45 5 -48 10 -4 7 -420 10 -1215 10 l-1208 0 -25 -30z"/></svg>
@@ -1295,6 +1344,20 @@
             return s === 'true' || s === '1' || s === 'sim' || s === 'yes';
         }
 
+        function normalizeName(value) {
+            return String(value ?? '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function isPrOtavio(name) {
+            const n = normalizeName(name);
+            return n.includes('pr otavio') || n.includes('pr. otavio') || n.includes('protavio');
+        }
+
         function parsePtBrSheetTimestamp(ts) {
             const raw = String(ts ?? '').trim();
             if (!raw) return null;
@@ -1783,7 +1846,14 @@
                 return;
             }
 
-            const list = reflectionsState.byDate.get(key) || [];
+            const listRaw = reflectionsState.byDate.get(key) || [];
+            const list = listRaw
+                .map((item, idx) => ({ item, idx, featured: isPrOtavio(item?.['Seu Nome Completo']) }))
+                .sort((a, b) => {
+                    if (a.featured !== b.featured) return a.featured ? -1 : 1;
+                    return a.idx - b.idx;
+                })
+                .map((x) => x.item);
             if (!list.length) {
                 els.refList.style.display = 'none';
                 els.refState.style.display = 'block';
@@ -1798,6 +1868,9 @@
             list.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'reflectionCard';
+                if (isPrOtavio(item?.['Seu Nome Completo'])) {
+                    card.classList.add('featured');
+                }
 
                 const meta = document.createElement('div');
                 meta.className = 'reflectionMeta';
@@ -1816,10 +1889,32 @@
                 const text = document.createElement('div');
                 text.className = 'reflectionText';
                 text.textContent = String(item?.['Sua Reflexão e Devocional'] ?? '').trim();
+                text.classList.add('clamped');
 
                 card.appendChild(meta);
                 card.appendChild(text);
                 els.refList.appendChild(card);
+
+                const more = document.createElement('button');
+                more.type = 'button';
+                more.className = 'refMore';
+                more.textContent = 'Ver mais';
+                more.style.display = 'none';
+
+                more.addEventListener('click', () => {
+                    const expanded = card.classList.toggle('expanded');
+                    more.textContent = expanded ? 'Ver menos' : 'Ver mais';
+                });
+
+                card.appendChild(more);
+
+                requestAnimationFrame(() => {
+                    const needsMore = text.scrollHeight > text.clientHeight + 2;
+                    more.style.display = needsMore ? 'inline-flex' : 'none';
+                    if (!needsMore) {
+                        text.classList.remove('clamped');
+                    }
+                });
             });
         }
 
@@ -1923,6 +2018,13 @@
             updateStoryPreview();
         }
 
+        function updateTitleSpacer() {
+            const titleEl = document.querySelector('.title');
+            if (!titleEl) return;
+            const h = Math.ceil(titleEl.getBoundingClientRect().height || 0);
+            document.documentElement.style.setProperty('--title-h', `${h}px`);
+        }
+
         els.prev.addEventListener('click', () => {
             state.monthIndex = Math.max(0, state.monthIndex - 1);
             state.selectedDate = null;
@@ -1940,12 +2042,23 @@
             if (now.getFullYear() === YEAR) {
                 state.monthIndex = now.getMonth();
             }
+            updateTitleSpacer();
             render();
             fetchReflections();
 
             if (els.openStoryModal) {
                 els.openStoryModal.classList.add('pulseHint');
             }
+
+            window.addEventListener('resize', () => {
+                updateTitleSpacer();
+                updateStoryPreview();
+            });
+
+            window.addEventListener('orientationchange', () => {
+                updateTitleSpacer();
+                updateStoryPreview();
+            });
 
             function openStoryModal() {
                 if (!els.storyModal) return;
